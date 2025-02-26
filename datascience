@@ -1,0 +1,61 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Dados fornecidos
+data = {
+    "Pos": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+    "Time": [
+        "Bayern", "Leverkusen", "Frankfurt", "Freiburg", "Mainz", "RB Leipzig", 
+        "Stuttgart", "Wolfsburg", "M'gladbach", "Dortmund", "Augsburg", "Bremen", 
+        "Union Berlin", "Hoffenheim", "St. Pauli", "Heidenheim", "Bochum", "Holstein Kiel"
+    ],
+    "Partidas": [23] * 18,
+    "Pontos": [58, 50, 42, 39, 38, 38, 36, 34, 34, 32, 31, 30, 24, 22, 21, 15, 15, 13],
+    "Saldo de Gols": [50, 24, 16, -2, 13, 7, 7, 9, 0, 5, -8, -12, -14, -16, -9, -20, -25, -25],
+    "Gols (Marcados/Sofridos)": [
+        "69:19", "51:27", "49:33", "34:36", "37:24", "38:31", "41:34", "46:37", 
+        "35:35", "43:38", "27:35", "35:47", "21:35", "30:46", "18:27", "27:47", 
+        "22:47", "34:59"
+    ]
+}
+
+# Criando o DataFrame
+df = pd.DataFrame(data)
+
+# Separando gols marcados e sofridos
+df[["Gols Marcados", "Gols Sofridos"]] = df["Gols (Marcados/Sofridos)"].str.split(":", expand=True).astype(int)
+
+# Calculando média e mediana de gols marcados e sofridos
+media_gols_marcados = df["Gols Marcados"].mean()
+mediana_gols_marcados = df["Gols Marcados"].median()
+
+media_gols_sofridos = df["Gols Sofridos"].mean()
+mediana_gols_sofridos = df["Gols Sofridos"].median()
+
+# Exibindo os resultados
+print(f"Média de gols marcados: {media_gols_marcados:.2f}")
+print(f"Mediana de gols marcados: {mediana_gols_marcados}")
+print(f"Média de gols sofridos: {media_gols_sofridos:.2f}")
+print(f"Mediana de gols sofridos: {mediana_gols_sofridos}")
+
+# Gerando gráficos
+plt.figure(figsize=(12, 6))
+
+# Gráfico de gols marcados
+plt.subplot(1, 2, 1)
+plt.bar(df["Time"], df["Gols Marcados"], color="blue", label="Gols Marcados")
+plt.xticks(rotation=90)
+plt.title("Gols Marcados por Time")
+plt.xlabel("Time")
+plt.ylabel("Gols Marcados")
+
+# Gráfico de gols sofridos
+plt.subplot(1, 2, 2)
+plt.bar(df["Time"], df["Gols Sofridos"], color="red", label="Gols Sofridos")
+plt.xticks(rotation=90)
+plt.title("Gols Sofridos por Time")
+plt.xlabel("Time")
+plt.ylabel("Gols Sofridos")
+
+plt.tight_layout()
+plt.show()
